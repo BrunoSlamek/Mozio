@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
+
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework import serializers
 
 from .models import Provider, ServiceArea
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

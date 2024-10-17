@@ -24,7 +24,6 @@ router.register(r'users', views.UserViewSet)
 router.register(r'providers', views.ProviderViewSet)
 router.register(r'service-areas', views.ServiceAreaViewSet)
 
-
 urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
