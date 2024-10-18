@@ -38,6 +38,7 @@ See more at requirements.txt file
 | DELETE | `/serviceareas/{id}/`                        | Delete a service area by ID                | None                                                                        | 204 No Content                             |
 | GET    | `/serviceareas/search?lat={lat}&lng={lng}`   | Search service areas by latitude/longitude | None                                                                        | 200 OK, List of matching service areas     |
 
+To test /search you should be logged "admin" and "admin".
 ---
 
 ## EC2 Setup
