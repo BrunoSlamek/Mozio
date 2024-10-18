@@ -66,7 +66,6 @@ See more at requirements.txt file
 | **State Transition Message**    | –                                                          |
 | **Usage Operation**             | RunInstances                                               |
 | **RAM Disk ID**                 | –                                                          |
-| **Owner**                       | 159904225426                                               |
 | **Enclaves Support**            | –                                                          |
 | **Boot Mode**                   | uefi-preferred                                             |
 | **Current Instance Boot Mode**  | Legacy BIOS                                                |
