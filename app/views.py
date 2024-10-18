@@ -30,7 +30,7 @@ class ServiceAreaViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-    @action(detail=False, methods=['get'], url_path='search')
+    @action(detail=False, methods=['get'], url_path='search', name='servicearea-search')
     def _search_lat_lng(self, request):
         """
         Custom endpoint that takes lat/lng as query params and returns

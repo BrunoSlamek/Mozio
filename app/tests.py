@@ -1,8 +1,9 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from .models import Provider
+from .models import Provider, ServiceArea
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import Polygon
 
 
 class ProviderViewSetTests(APITestCase):
@@ -64,3 +65,46 @@ class ProviderViewSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Provider.objects.count(), len(self.providers) - 1)
         self.assertRaises(Provider.DoesNotExist, Provider.objects.get, id=provider.id)
+
+
+class ServiceAreaViewSetTests(APITestCase):
+    def setUp(self):
+        self.provider = Provider.objects.create(
+            name='Test Provider',
+            email='test@example.com',
+            phone_number='1234567890',
+            language='English',
+            currency='USD'
+        )
+        self.service_area_url = reverse('servicearea-list')
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')
+
+        self.geojson = Polygon(((0, 0), (0, 1), (1, 1), (1, 0), (0, 0)))
+
+        self.service_areas = [
+            ServiceArea.objects.create(
+                name='Downtown',
+                price=10.00,
+                geojson=self.geojson,
+                provider=self.provider
+            ),
+            ServiceArea.objects.create(
+                name='Uptown',
+                price=15.00,
+                geojson=self.geojson,
+                provider=self.provider
+            )
+        ]
+
+    def test_search_service_areas(self):
+        search_url = '/service-areas/search/'
+        response = self.client.get(search_url, {'lat': 0.5, 'lng': 0.5})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), len(self.service_areas))  # Expecting both areas to be returned
+
+    def test_search_service_areas_missing_params(self):
+        search_url = '/service-areas/search/'
+        response = self.client.get(search_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, {'error': 'lat and lng are required parameters'})
